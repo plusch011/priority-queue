@@ -12,39 +12,49 @@ class MaxHeap {
 	}
 
 	pop() {
-		
+		for (var key in this.root) {
+			return this.root.data;
+		}
 	}
 
 	detachRoot() {
+		// delete this.parentNodes[this.root];
+		// tmp = this.root;
+		this.root = null;
+		// return tmp;
 		
 	}
 
 	restoreRootFromLastInsertedNode(detached) {
-		
+
 	}
 
 	size() {
-		
+
 	}
 
 	isEmpty() {
-		if(Object.entries(this.heap).length === 0) return true;
+		return (this.root === null && this.parentNodes.length == 0) ? true : false;
 	}
 
 	clear() {
-		
+		this.root = null;
+		this.parentNodes = [];
 	}
 
 	insertNode(node) {
-		
+		if (this.isEmpty) this.root = node;
+		// let root = detachRoot();
+		// restoreRootFromLastInsertedNode(root);
+		// return this.root.data;
 	}
 
 	shiftNodeUp(node) {
-		
+
 	}
 
 	shiftNodeDown(node) {
-		
+
 	}
 }
 
