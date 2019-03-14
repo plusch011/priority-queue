@@ -2,11 +2,13 @@ const Node = require('./node');
 
 class MaxHeap {
 	constructor() {
-		
+		this.root = null;
+		this.parentNodes = [];
 	}
 
 	push(data, priority) {
-		
+		this.insertNode(new Node(data, priority));
+		this.shiftNodeUp(new Node(data, priority));
 	}
 
 	pop() {
@@ -26,7 +28,7 @@ class MaxHeap {
 	}
 
 	isEmpty() {
-		
+		if(Object.entries(this.heap).length === 0) return true;
 	}
 
 	clear() {
