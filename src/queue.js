@@ -7,6 +7,7 @@ class PriorityQueue {
 	}
 
 	push(data, priority) {
+		if(this.heap.parentNodes.length == this.maxheap) throw new Error('Error');
 		this.heap.push(data, priority);
 	}
 
@@ -16,12 +17,12 @@ class PriorityQueue {
 	}
 
 	size() {
-		return this.heap;
+		return this.heap.parentNodes.length;
 	}
 
 	isEmpty() {
-		for (let key in this.heap) {
-			return;
+		if(this.parentNodes.length) {
+			return false;
 		}
 		return true;
 	}

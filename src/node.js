@@ -20,10 +20,12 @@ class Node {
 	}
 
 	remove() {
-		// if(this.parent != null) this.parent.removeChild(this);
+		if(this.parent == null) return;
+		this.parent.removeChild(this);
 	}
 
 	swapWithParent() {
+		if(this.parent == null) return;
 
 	}
 }
