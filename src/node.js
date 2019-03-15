@@ -32,14 +32,26 @@ class Node {
 	swapWithParent() {
 		if (this.parent == null) return;
 
-		let grandson = this; //grandson >> child >> root
-		let child = this.parent; 
+		let grandson = this;
+		let child = this.parent;
 		let root = this.parent.parent;
 
-		let tmp = Object.assign({}, child);
-    	[child.data, child.priority] = [grandson.data, grandson.priority];
-    	[grandson.data, grandson.priority] = [tmp.data, tmp.priority];
+		if(root != null) root.removeChild(child);
+		child.removeChild(grandson);
 		
+		let sonsGr = [grandson.left, grandson.right];
+		let sonsCh = [child.left, child.right];
+		[grandson.left, grandson.right] = sonsCh;
+		[child.left, child.right] = sonsGr;
+		if(grandson.left != null) grandson.left.parent = grandson;
+		if(grandson.right != null) grandson.right.parent = grandson;
+		if(child.left != null) child.left.parent = child;
+		if(child.right != null) child.right.parent = child;
+
+		if(root != null) root.appendChild(grandson);
+		grandson.appendChild(child);
+
+
 	}
 }
 
