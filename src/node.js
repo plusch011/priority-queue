@@ -5,7 +5,7 @@ class Node {
 	}
 
 	appendChild(node) {
-		if (this.left || this.left != null) {
+		if (this.left != null) {
 			if (!this.right || this.right == null) {
 				this.right = node;
 				node.parent = this;
@@ -31,12 +31,14 @@ class Node {
 
 	swapWithParent() {
 		if (this.parent == null) return;
-		let grandson = this;
-		let child = this.parent;
+
+		let grandson = this; //grandson >> child >> root
+		let child = this.parent; 
 		let root = this.parent.parent;
-		child.parent = grandson;
-		grandson.parent = root;
-		// this.left.parent = this.right;
+
+		let tmp = Object.assign({}, child);
+    	[child.data, child.priority] = [grandson.data, grandson.priority];
+    	[grandson.data, grandson.priority] = [tmp.data, tmp.priority];
 		
 	}
 }
