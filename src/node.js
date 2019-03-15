@@ -5,16 +5,26 @@ class Node {
 	}
 
 	appendChild(node) {
-		if (this.left != null) {
-			if (!this.right || this.right == null) {
-				this.right = node;
-				node.parent = this;
-				return;
-			}
+		// if (this.left != null) {
+		// 	if (!this.right || this.right == null) {
+		// 		this.right = node;
+		// 		node.parent = this;
+		// 		return;
+		// 	}
+		// 	return;
+		// }
+		// this.left = node;
+		// node.parent = this;
+		if (this.left == null) {
+			this.left = node;
+			node.parent = this;
+			return;
+		} else if (this.right == null) {
+			this.right = node;
+			node.parent = this;
 			return;
 		}
-		this.left = node;
-		node.parent = this;
+		return;
 	}
 
 	removeChild(node) {
@@ -50,7 +60,6 @@ class Node {
 
 		if(root != null) root.appendChild(grandson);
 		grandson.appendChild(child);
-
 
 	}
 }
