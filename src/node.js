@@ -5,16 +5,6 @@ class Node {
 	}
 
 	appendChild(node) {
-		// if (this.left != null) {
-		// 	if (!this.right || this.right == null) {
-		// 		this.right = node;
-		// 		node.parent = this;
-		// 		return;
-		// 	}
-		// 	return;
-		// }
-		// this.left = node;
-		// node.parent = this;
 		if (this.left == null) {
 			this.left = node;
 			node.parent = this;
@@ -46,8 +36,8 @@ class Node {
 		let child = this.parent;
 		let root = this.parent.parent;
 
-		if(root != null) root.removeChild(child);
 		child.removeChild(grandson);
+		if(root != null) root.removeChild(child);
 		
 		let sonsGr = [grandson.left, grandson.right];
 		let sonsCh = [child.left, child.right];
@@ -58,8 +48,8 @@ class Node {
 		if(child.left != null) child.left.parent = child;
 		if(child.right != null) child.right.parent = child;
 
-		if(root != null) root.appendChild(grandson);
 		grandson.appendChild(child);
+		if(root != null) root.appendChild(grandson);
 
 	}
 }
