@@ -7,7 +7,7 @@ class PriorityQueue {
 	}
 
 	push(data, priority) {
-		if(this.heap.parentNodes.length == this.maxheap) throw new Error('Error');
+		if(this.heap.parentNodes != null && this.heap.parentNodes.length == this.maxSize) throw new Error('Error');
 		this.heap.push(data, priority);
 	}
 
