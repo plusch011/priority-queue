@@ -15,45 +15,52 @@ class MaxHeap {
 
 	pop() {
 		if (this.isEmpty()) return;
-		let rot = detachRoot();
-		restoreRootFromLastInsertedNode(rot);
-		return rot.data;
+		let detachedRoot = this.detachRoot();
+		this.restoreRootFromLastInsertedNode(detachedRoot);
+		this.shiftNodeDown(this.root);
+		return detachedRoot.data;
 	}
 
-    detachRoot() {
-        let detachedRoot = this.root; // ссылка
-        this.root = null;
+	detachRoot() {
+		let detachedRoot = this.root; // ссылка
+		this.root = null;
 
-        if (detachedRoot == this.parentNodes[0]) {
-            this.parentNodes.shift()
-        }
+		if (detachedRoot == this.parentNodes[0]) {
+			this.parentNodes.shift()
+		}
 
-        return detachedRoot;
+		return detachedRoot;
 
-    }
-	
-    restoreRootFromLastInsertedNode(detached) {
+	}
+
+	restoreRootFromLastInsertedNode(detached) {
 		let lastNode = this.parentNodes.pop();
-		
-        if (lastNode.parent != null && lastNode.parent.right != null) {
-            this.parentNodes.unshift(lastNode.parent);
-        }
-		
-		this.root = lastNode;
-        lastNode.remove();
 
-        let tmpLeft = detached.left;
-        let tmpRight = detached.right;
-		
-        if (tmpLeft != null) {
+		if (lastNode == undefined) return;
+
+		if (lastNode.parent != null && lastNode.parent.right == lastNode) {
+			if (lastNode.parent == detached) {
+				this.parentNodes.unshift(lastNode);
+			} else {
+				this.parentNodes.unshift(lastNode.parent);
+			}
+		}
+
+		this.root = lastNode;
+		lastNode.remove();
+
+		let tmpLeft = detached.left;
+		let tmpRight = detached.right;
+
+		if (tmpLeft != null) {
 			detached.removeChild(tmpLeft);
-            lastNode.appendChild(tmpLeft);
-        }
-        if (tmpRight != null) {
+			lastNode.appendChild(tmpLeft);
+		}
+		if (tmpRight != null) {
 			detached.removeChild(tmpRight);
-            lastNode.appendChild(tmpRight);
-        }
-    }
+			lastNode.appendChild(tmpRight);
+		}
+	}
 
 
 	size() {
@@ -113,7 +120,32 @@ class MaxHeap {
 	}
 
 	shiftNodeDown(node) {
+		if (node == null) return;
 
+		let leftCh = node.left;
+		let rightCh = node.right;
+		let child;
+
+		if (leftCh == null) {
+			child = rightCh;
+		} else if (rightCh == null) {
+			child = leftCh;
+		} else if (leftCh.priority > rightCh.priority) {
+			child = leftCh;
+		} else child = rightCh;
+		if(child == undefined) return;
+		if (node != null && node.priority < child.priority) {
+
+			let idNode = this.parentNodes.indexOf(node);
+			let idPar = this.parentNodes.indexOf(child);
+			if (~idNode) this.parentNodes[idNode] = child;
+			if (~idPar) this.parentNodes[idPar] = node;
+
+			child.swapWithParent();
+			if (this.root == node) this.root = child;
+
+			return this.shiftNodeDown(node);
+		}
 	}
 }
 

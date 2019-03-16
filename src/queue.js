@@ -7,21 +7,21 @@ class PriorityQueue {
 	}
 
 	push(data, priority) {
-		if(this.heap.parentNodes != null && this.heap.parentNodes.length == this.maxSize) throw new Error('Error');
+		if(this.size() == this.maxSize) throw new Error('Error: max size!');
 		this.heap.push(data, priority);
 	}
 
 	shift() {
-		this.heap.pop();
-		
+		if(this.heap.root == null) throw new Error('Error: queue is empty');
+		return this.heap.pop();
 	}
 
 	size() {
-		return this.heap.parentNodes.length;
+		return this.heap.size();
 	}
 
 	isEmpty() {
-		if(this.parentNodes.length) {
+		if(this.heap.size()) {
 			return false;
 		}
 		return true;
