@@ -8,8 +8,9 @@ class MaxHeap {
 	}
 
 	push(data, priority) {
-		this.insertNode(new Node(data, priority));
-		this.shiftNodeUp(new Node(data, priority));
+		let node = new Node(data, priority);
+		this.insertNode(node);
+		this.shiftNodeUp(node);
 	}
 
 	pop() {
@@ -19,22 +20,41 @@ class MaxHeap {
 		return rot.data;
 	}
 
-	detachRoot() {
-		let tmp = this.root; // ссылка
-		let detachedRoot;
-		this.root = null;
-		
-		if(tmp == this.parentNodes[0]) {
-			this.parentNodes.shift()
-		}
-		
-		return tmp;
+    detachRoot() {
+        let detachedRoot = this.root; // ссылка
+        this.root = null;
 
-	}
+        if (detachedRoot == this.parentNodes[0]) {
+            this.parentNodes.shift()
+        }
 
-	restoreRootFromLastInsertedNode(detached) {
-		// this.root = this.parentNodes.pop();
-	}
+        return detachedRoot;
+
+    }
+	
+    restoreRootFromLastInsertedNode(detached) {
+		let lastNode = this.parentNodes.pop();
+		
+        if (lastNode.parent != null && lastNode.parent.right != null) {
+            this.parentNodes.unshift(lastNode.parent);
+        }
+		
+		this.root = lastNode;
+        lastNode.remove();
+
+        let tmpLeft = detached.left;
+        let tmpRight = detached.right;
+		
+        if (tmpLeft != null) {
+			detached.removeChild(tmpLeft);
+            lastNode.appendChild(tmpLeft);
+        }
+        if (tmpRight != null) {
+			detached.removeChild(tmpRight);
+            lastNode.appendChild(tmpRight);
+        }
+    }
+
 
 	size() {
 
@@ -60,13 +80,12 @@ class MaxHeap {
 	}
 
 	insertNode(node) {
-		if (!this.size()) {
+		if (!this.parentNodes.length) {
 			this.root = node;
 			this.parentNodes.push(node);
 
 		} else {
-			this.parentNodes[0]
-				.appendChild(node);
+			this.parentNodes[0].appendChild(node);
 			this.parentNodes.push(node);
 		}
 
@@ -78,15 +97,15 @@ class MaxHeap {
 	}
 
 	shiftNodeUp(node) {
-		if(node.parent == null) {
+		if (node.parent == null) {
 			this.root = node;
 			return;
 		}
 		if (node.priority > node.parent.priority) {
-            let idNode = this.parentNodes.indexOf(node);
-            let idPar = this.parentNodes.indexOf(node.parent);
-            if(~idNode) this.parentNodes[idNode] = node.parent;
-            if(~idPar) this.parentNodes[idPar] = node;
+			let idNode = this.parentNodes.indexOf(node);
+			let idPar = this.parentNodes.indexOf(node.parent);
+			if (~idNode) this.parentNodes[idNode] = node.parent;
+			if (~idPar) this.parentNodes[idPar] = node;
 
 			node.swapWithParent();
 			return this.shiftNodeUp(node);
